@@ -1,0 +1,19 @@
+CXX = clang++
+CXX_FLAGS = -std=c++14 -Weverything -fno-rtti -Wno-c++98-compat-pedantic -Wno-padded -g -O3 -fsanitize=undefined -fsanitize=address
+rule compile_cpp
+  command = $CXX $CXX_FLAGS ${opts} -MMD -MT $out -MF $out.d -c $in -o $out
+  description = compile(cpp) $out
+  depfile = $out.d
+  deps = gcc
+
+LINKER_EXE = clang
+LINKER_EXE_FLAGS = -g -O3 -fsanitize=undefined -fsanitize=address
+rule link_exe
+  command = $LINKER_EXE $LINKER_EXE_FLAGS ${opts} -o $out $in
+  description = link(exe) $out
+
+build tmp/check.o: compile_cpp check.cpp
+build tmp/check_reference.o: compile_cpp check_reference.cpp
+build check.bin: link_exe tmp/check.o tmp/check_reference.o
+  opts = -lstdc++ -lm
+build all: phony check.bin
