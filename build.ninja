@@ -13,7 +13,8 @@ rule link_exe
   description = link(exe) $out
 
 build tmp/check.o: compile_cpp check.cpp
+build tmp/check_parse_stringify.o: compile_cpp check_parse_stringify.cpp
 build tmp/check_reference.o: compile_cpp check_reference.cpp
-build check.bin: link_exe tmp/check.o tmp/check_reference.o
+build check.bin: link_exe tmp/check.o tmp/check_parse_stringify.o tmp/check_reference.o
   opts = -lstdc++ -lm
 build all: phony check.bin
