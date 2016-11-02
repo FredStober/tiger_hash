@@ -12,3 +12,4 @@ else:
 		link_exe_opts = '-g -O3 -fsanitize=undefined -fsanitize=address')
 
 executable('check.bin', [match('check*.cpp')])
+executable('example.bin', ['example.cpp'])

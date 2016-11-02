@@ -24,12 +24,18 @@ tmp/check_parse_stringify.o: check_parse_stringify.cpp
 tmp/check_reference.o: check_reference.cpp
 	$(CXX) $(CXX_FLAGS) ${opts} -MMD -MT tmp/check_reference.o -MF tmp/check_reference.o.d -c check_reference.cpp -o tmp/check_reference.o
 
-opts_feb8a140c0d0f69d31572276363b144b := -lstdc++ -lm
 check.bin: tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o
-	$(LINKER_EXE) $(LINKER_EXE_FLAGS) $(opts_feb8a140c0d0f69d31572276363b144b) -o check.bin tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o
+	$(LINKER_EXE) $(LINKER_EXE_FLAGS) -lstdc++ -lm -o check.bin tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o
 
-all: check.bin
+-include tmp/example.o.d
+tmp/example.o: example.cpp
+	$(CXX) $(CXX_FLAGS) ${opts} -MMD -MT tmp/example.o -MF tmp/example.o.d -c example.cpp -o tmp/example.o
+
+example.bin: tmp/example.o
+	$(LINKER_EXE) $(LINKER_EXE_FLAGS) -lstdc++ -lm -o example.bin tmp/example.o
+
+all: check.bin example.bin
 .PHONY: all
 clean:
-	@rm -f tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o check.bin
+	@rm -f tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o check.bin tmp/example.o example.bin
 .DEFAULT_GOAL := all
