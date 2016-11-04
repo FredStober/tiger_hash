@@ -74,6 +74,9 @@ template<typename HashType, int Padding>
 struct tiger_algorithm_base_t
 {
 	tiger_algorithm_base_t();
+	template<typename Container>
+	tiger_algorithm_base_t(Container const & input);
+	tiger_algorithm_base_t(byte_t const * input, byte_t const * const input_end);
 
 	template<typename Container>
 	void update(Container const & input);
@@ -567,20 +570,24 @@ inline void tiger_compress(byte_t const * const input, std::array<std::uint64_t,
 } // end of anonymous namespace
 
 template<typename HashType, int Padding>
-void tiger_algorithm_base_t<HashType, Padding>::reset()
-{
-	_internal[0] = 0x0123456789ABCDEFLL;
-	_internal[1] = 0xFEDCBA9876543210LL;
-	_internal[2] = 0xF096A5B4C3B2E187LL;
-	_buffer.fill(0);
-	_byte_count = 0;
-	_offset = 0;
-}
-
-template<typename HashType, int Padding>
 tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t()
 {
 	reset();
+}
+
+template<typename HashType, int Padding>
+template<typename Container>
+tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t(Container const & input)
+{
+	reset();
+	update(input);
+}
+
+template<typename HashType, int Padding>
+tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t(byte_t const * input, byte_t const * const input_end)
+{
+	reset();
+	update(input, input_end);
 }
 
 template<typename HashType, int Padding>
@@ -644,6 +651,17 @@ HashType const tiger_algorithm_base_t<HashType, Padding>::get_digest()
 	HashType const result(_internal);
 	reset();
 	return result;
+}
+
+template<typename HashType, int Padding>
+void tiger_algorithm_base_t<HashType, Padding>::reset()
+{
+	_internal[0] = 0x0123456789ABCDEFLL;
+	_internal[1] = 0xFEDCBA9876543210LL;
+	_internal[2] = 0xF096A5B4C3B2E187LL;
+	_buffer.fill(0);
+	_byte_count = 0;
+	_offset = 0;
 }
 
 }
