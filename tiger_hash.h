@@ -1,4 +1,10 @@
 /*
+ * Implementation of the Tiger / Tiger2 hash algorithm described in:
+ *   Ross J. Anderson and Eli Biham
+ *     TIGER: A Fast New Hash Function
+ *   In Proceedings of the Third International Workshop on Fast Software Encryption,
+ *   1996, Springer-Verlag, London, UK, 89-97
+ *
  * Copyright (C) 2012-2016 by Fred Stober
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -29,4 +29,4 @@ int main()
 
 The Hash algorithm was published in:
 
- * Ross Anderson and Eli Biham, Tiger — A Fast New Hash Function, proceedings of Fast Software Encryption 3, Cambridge, 1996
+ * Ross J. Anderson and Eli Biham - TIGER: A Fast New Hash Function, In Proceedings of the Third International Workshop on Fast Software Encryption, 1996, Springer-Verlag, London, UK, 89-97
