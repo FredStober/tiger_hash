@@ -123,13 +123,13 @@ namespace
 
 /* Part III-a: General support code */
 
-inline byte_t _digit2byte(char const input)
+inline constexpr byte_t _digit2byte(char const input)
 {
 	return 9 * (input >> 6) + (input & 0x0f);
 }
 
 template<typename StringType, typename ArrayType>
-inline void _to_bytes(StringType const & input, ArrayType & field)
+inline constexpr void _to_bytes(StringType const & input, ArrayType & field)
 {
 	typename StringType::const_reverse_iterator it_s = input.crbegin();
 	typename ArrayType::reverse_iterator it_h = field.rbegin();
@@ -523,7 +523,7 @@ inline void tiger_round(std::array<std::uint64_t, 3> & state,
 	state[b] *= mul;
 }
 
-inline void tiger_compress(byte_t const * const input, std::array<std::uint64_t, 3> &state_cur)
+inline void tiger_compress(byte_t const * const input, std::array<std::uint64_t, 3> & state_cur)
 {
 	std::array<std::uint64_t, 3> state = state_cur; // copy state - old state is needed later
 	std::array<std::uint64_t, 8> x;
