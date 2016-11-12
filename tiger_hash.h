@@ -505,6 +505,10 @@ static constexpr std::array<std::uint64_t, 256> const TIGER_S4 = {{
 }};
 
 static constexpr std::size_t const TIGER_PASSES = 3;
+static constexpr std::array<uint64_t, 3> const TIGER_STATE_INIT =
+{{
+	0x0123456789ABCDEFLL, 0xFEDCBA9876543210LL, 0xF096A5B4C3B2E187LL
+}};
 
 inline void tiger_round(std::array<std::uint64_t, 3> & state,
 	std::uint8_t const a, std::uint8_t const b, std::uint8_t const c, std::uint64_t const x, std::size_t const mul)
@@ -662,9 +666,7 @@ HashType const tiger_algorithm_base_t<HashType, Padding>::get_digest()
 template<typename HashType, int Padding>
 void tiger_algorithm_base_t<HashType, Padding>::reset()
 {
-	_internal[0] = 0x0123456789ABCDEFLL;
-	_internal[1] = 0xFEDCBA9876543210LL;
-	_internal[2] = 0xF096A5B4C3B2E187LL;
+	_internal = TIGER_STATE_INIT;
 	_buffer.fill(0);
 	_byte_count = 0;
 	_offset = 0;
