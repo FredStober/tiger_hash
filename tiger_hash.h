@@ -135,18 +135,18 @@ inline constexpr void _to_bytes(StringType const & input, ArrayType & field)
 	typename ArrayType::reverse_iterator it_h = field.rbegin();
 	while ((it_s != input.crend()) && (it_h != field.rend()))
 	{
-		*it_h = _digit2byte(*it_s);
+		*it_h = static_cast<typename ArrayType::value_type>(_digit2byte(*it_s));
 		++it_s;
 		if (it_s == input.crend())
 			break;
-		*it_h |= static_cast<byte_t>(_digit2byte(*it_s) * 16);
+		*it_h |= static_cast<typename ArrayType::value_type>(_digit2byte(*it_s) << 4);
 		++it_s;
 		++it_h;
 	}
 }
 
 template<typename ArrayType, typename T = typename ArrayType::value_type>
-inline std::string const _to_string(ArrayType & field)
+inline std::string const _to_string(ArrayType const & field)
 {
 	static char const * const digits = "0123456789abcdef";
 	std::string result(field.size() << 1, '0');
