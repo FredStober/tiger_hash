@@ -654,8 +654,8 @@ HashType const tiger_algorithm_base_t<HashType, Padding>::get_digest()
 		tiger_compress(_buffer.data(), _internal);
 		_buffer.fill(0);
 	}
-	std::uint64_t const count = _byte_count << 3;
-	std::memcpy(_buffer.data() + block_size - 8, &count, sizeof(std::uint64_t));
+	std::uint64_t const bit_count = _byte_count << 3;
+	std::memcpy(_buffer.data() + block_size - 8, &bit_count, sizeof(std::uint64_t));
 	tiger_compress(_buffer.data(), _internal);
 
 	HashType const result(_internal);
