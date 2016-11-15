@@ -101,6 +101,8 @@ private:
 	void reset();
 };
 
+inline std::array<byte_t, 24> tiger_compress_block(std::array<byte_t, 64> const & input);
+
 // Definition of Tiger / Tiger2 hash objects and algorithms
 struct tiger_hash_t : base_hash_t<tiger_hash_t, 24>
 {
@@ -670,6 +672,15 @@ void tiger_algorithm_base_t<HashType, Padding>::reset()
 	_buffer.fill(0);
 	_byte_count = 0;
 	_offset = 0;
+}
+
+inline std::array<byte_t, 24> tiger_compress_block(std::array<byte_t, 64> const & input)
+{
+	std::array<uint64_t, 3> state = TIGER_STATE_INIT;
+	tiger_compress(input.data(), state);
+	std::array<byte_t, 24> result;
+	std::memcpy(result.data(), state.data(), 24);
+	return result;
 }
 
 }
