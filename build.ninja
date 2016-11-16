@@ -14,10 +14,11 @@ rule link_exe_df7e252a704d22d759686e33c506bc8f
 
 build tmp/check.o: compile_cpp check.cpp
 build tmp/check_benchmark.o: compile_cpp check_benchmark.cpp
+build tmp/check_blockhash.o: compile_cpp check_blockhash.cpp
 build tmp/check_comparison.o: compile_cpp check_comparison.cpp
 build tmp/check_parse_stringify.o: compile_cpp check_parse_stringify.cpp
 build tmp/check_reference.o: compile_cpp check_reference.cpp
-build check.bin: link_exe_df7e252a704d22d759686e33c506bc8f tmp/check.o tmp/check_benchmark.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o
+build check.bin: link_exe_df7e252a704d22d759686e33c506bc8f tmp/check.o tmp/check_benchmark.o tmp/check_blockhash.o tmp/check_comparison.o tmp/check_parse_stringify.o tmp/check_reference.o
 build tmp/example.o: compile_cpp example.cpp
 build example.bin: link_exe_df7e252a704d22d759686e33c506bc8f tmp/example.o
 build all: phony check.bin example.bin
