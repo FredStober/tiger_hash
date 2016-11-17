@@ -1,4 +1,4 @@
-#include "tiger_hash.h"
+#include "tiger_hash.hpp"
 #include <functional>
 #include <iostream>
 
