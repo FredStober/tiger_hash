@@ -674,13 +674,11 @@ void tiger_algorithm_base_t<HashType, Padding>::reset()
 	_offset = 0;
 }
 
-inline std::array<byte_t, 24> tiger_compress_block(std::array<byte_t, 64> const & input)
+inline void tiger_compress_block(byte_t const * const input, byte_t * const output)
 {
 	std::array<uint64_t, 3> state = TIGER_STATE_INIT;
-	tiger_compress(input.data(), state);
-	std::array<byte_t, 24> result;
-	std::memcpy(result.data(), state.data(), 24);
-	return result;
+	tiger_compress(input, state);
+	std::memcpy(output, state.data(), 24);
 }
 
 }
