@@ -1,5 +1,5 @@
 CXX := clang++
-CXX_FLAGS := -std=c++14 -Weverything -fno-rtti -Wno-c++98-compat-pedantic -Wno-padded -g -O3 -fsanitize=undefined -fsanitize=address
+CXX_FLAGS := -std=c++14 -Weverything -fno-rtti -Wno-c++98-compat-pedantic -g -O3 -fsanitize=undefined -fsanitize=address
 
 LINKER_EXE := clang
 LINKER_EXE_FLAGS := -g -O3 -fsanitize=undefined -fsanitize=address

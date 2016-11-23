@@ -1,6 +1,6 @@
 Header only implementation of the Tiger and Tiger2 Hash in C++14.
 
-The code will compile without warnings when using clang with ```-Weverything -Wno-c++98-compat-pedantic -Wno-padded```.
+The code will compile without warnings when using clang with ```-Weverything -Wno-c++98-compat-pedantic``` or gcc with ```-Wall```.
 
 Example:
 

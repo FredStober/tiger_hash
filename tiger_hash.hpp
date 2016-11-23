@@ -96,7 +96,7 @@ private:
 	std::array<uint64_t, 3> _internal;
 	std::array<byte_t, block_size> _buffer;
 	uint64_t _byte_count;
-	uint8_t _offset;
+	unsigned long int _offset; // only uint8_t needed, used larger size for padding
 
 	void reset();
 };
@@ -631,7 +631,7 @@ void tiger_algorithm_base_t<HashType, Padding>::update(byte_t const * input, byt
 
 	// Copy leftover data from input to buffer
 	std::copy(input, input_end, _buffer.data() + _offset);
-	_offset += input_end - input;
+	_offset += static_cast<std::size_t>(input_end - input);
 	if (_offset == block_size)
 	{
 		tiger_compress(_buffer.data(), _internal);
