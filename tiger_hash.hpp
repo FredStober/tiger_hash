@@ -37,7 +37,7 @@ namespace Hash
 /* Part I: General support code for all hash algorithms */
 /********************************************************/
 
-typedef char byte_t;
+typedef unsigned char byte_t;
 
 // Helper functions to convert hex strings to hash objects
 template<typename HashType, typename StringType>
@@ -82,11 +82,13 @@ struct tiger_algorithm_base_t
 	tiger_algorithm_base_t();
 	template<typename Container>
 	tiger_algorithm_base_t(Container const & input);
-	tiger_algorithm_base_t(byte_t const * input, byte_t const * const input_end);
+	template<typename T>
+	tiger_algorithm_base_t(T const * const input, T const * const input_end);
 
 	template<typename Container>
 	void update(Container const & input);
-	void update(byte_t const * input, byte_t const * const input_end);
+	template<typename T>
+	void update(T const * const input, T const * const input_end);
 
 	HashType const get_digest();
 
@@ -127,7 +129,8 @@ namespace
 
 inline constexpr byte_t _digit2byte(char const input)
 {
-	return 9 * (input >> 6) + (input & 0x0f);
+	// calulate hex value of a single character (0-9,a-f)
+	return static_cast<byte_t>(9 * (input >> 6) + (input & 0x0f));
 }
 
 template<typename StringType, typename ArrayType>
@@ -154,7 +157,7 @@ inline std::string const _to_string(ArrayType const & field)
 	std::string result(field.size() << 1, '0');
 	for (std::size_t i = 0; i < field.size(); ++i)
 	{
-		byte_t hash_byte = static_cast<typename std::make_signed<T>::type>(field[i]);
+		byte_t hash_byte = static_cast<typename std::make_unsigned<T>::type>(field[i]);
 		result[(i<<1)] = digits[(hash_byte >> 4) & 0x0f];
 		result[(i<<1) + 1] = digits[hash_byte & 0x0f];
 	}
@@ -596,15 +599,19 @@ tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t(Container cons
 }
 
 template<typename HashType, int Padding>
-tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t(byte_t const * input, byte_t const * const input_end)
+template<typename T>
+tiger_algorithm_base_t<HashType, Padding>::tiger_algorithm_base_t(T const * const input, T const * const input_end)
 {
 	reset();
 	update(input, input_end);
 }
 
 template<typename HashType, int Padding>
-void tiger_algorithm_base_t<HashType, Padding>::update(byte_t const * input, byte_t const * const input_end)
+template<typename T>
+void tiger_algorithm_base_t<HashType, Padding>::update(T const * const input_array, T const * const input_array_end)
 {
+	byte_t const * input = reinterpret_cast<byte_t const *>(input_array);
+	byte_t const * input_end = reinterpret_cast<byte_t const *>(input_array_end);
 	std::size_t const input_size = static_cast<std::size_t>(input_end - input);
 	_byte_count += input_size;
 
@@ -643,7 +650,8 @@ template<typename HashType, int Padding>
 template<typename Container>
 void tiger_algorithm_base_t<HashType, Padding>::update(Container const & input)
 {
-	update(&(*std::cbegin(input)), &(*std::cend(input)));
+	update(reinterpret_cast<byte_t const *>(&(*std::cbegin(input))),
+		reinterpret_cast<byte_t const *>(&(*std::cend(input))));
 }
 
 template<typename HashType, int Padding>
