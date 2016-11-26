@@ -26,7 +26,9 @@
  * THE SOFTWARE.
  */
 
-#pragma once
+#ifndef TIGER_HASH_HPP_8a1fa3d220df51bca441d2aec59c43a7be37eec0c981ff46
+#define TIGER_HASH_HPP_8a1fa3d220df51bca441d2aec59c43a7be37eec0c981ff46
+
 #include <array>
 #include <cstring>
 
@@ -694,3 +696,5 @@ inline void tiger_compress_block(byte_t const * const input, byte_t * const outp
 }
 
 }
+
+#endif
